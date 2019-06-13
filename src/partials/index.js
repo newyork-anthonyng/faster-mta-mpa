@@ -2,7 +2,7 @@ const subwayLinesPartial = require("./subwayLines.js");
 
 const headPartial = `
 <!doctype html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <title>MTA - Real-time Subway</title>
@@ -11,13 +11,10 @@ const headPartial = `
     <meta name="theme-color" content="#223266">
   </head>
   <body>
-    <h1>MTA Subway Time</h1>
+    <h1><a href="/">MTA Subway Time</a></h1>
 `;
 
 const footPartial = `
-<script>
-  console.log("Foot partial loaded at", Date.now());
-</script>
 </body>
 </html>
 `;

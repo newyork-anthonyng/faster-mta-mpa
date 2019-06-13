@@ -5,13 +5,17 @@ const {
   footPartial,
   subwayLinesPartial
 } = require("./src/partials/index.js");
-const { subwayStations } = require("./src/templates/index.js");
+const {
+  subwayStations,
+  realTime
+} = require("./src/templates/index.js");
 const https = require("https");
 const axios = require("axios");
 const LRU = require("lru-cache");
 
 const routes = new Map([
   ["subway", "/subway/:subwayLine"],
+  ["realTime", "/subway/:subwayLine/realTime/:subwayStation"],
   ["index", "/"]
 ]);
 
@@ -27,6 +31,7 @@ const apiCache = new LRU({
     maxAge: 1000 * 60 * 5, // 5 minutes.
 });
 const SUBWAY_STATION_URL = "http://traintimelb-367443097.us-east-1.elb.amazonaws.com/getStationsByLine";
+const REALTIME_URL = "http://traintimelb-367443097.us-east-1.elb.amazonaws.com/getTime";
 const apiClient = axios.create({
     baseURL: '',
     timeout: 10000,
@@ -51,9 +56,23 @@ async function getSubwayLine(line) {
   try {
     parsedBody = JSON.parse(data);
     apiCache.set(url, parsedBody);
-  } catch(e) {}
+  } catch(e) {
+    console.error(`Error getting subway line information at ${url}`);
+    console.error(e);
+  }
 
   return parsedBody;
+}
+
+async function getSubwayStation(line, station) {
+  const url = `${REALTIME_URL}/${line}/${station}`;
+  const networkResponse = await apiClient.request({
+    httpsAgent,
+    url
+  });
+
+  const data = networkResponse.data;
+  return data;
 }
 
 app.get(routes.get("subway"), async (req, res) => {
@@ -61,7 +80,19 @@ app.get(routes.get("subway"), async (req, res) => {
   res.write(headPartial);
   res.write(`<h2>${subwayLine}</h2>`);
   const data = await getSubwayLine(subwayLine);
+  data.subwayLine = subwayLine;
   res.write(subwayStations(data));
+  res.write(footPartial);
+  res.end();
+});
+
+app.get(routes.get("realTime"), async (req, res) => {
+  const { subwayLine, subwayStation } = req.params;
+
+  res.write(headPartial);
+  res.write(`<h2>Real time info for ${subwayLine}</h2>`);
+  const data = await getSubwayStation(subwayLine, subwayStation);
+  res.write(realTime(data));
   res.write(footPartial);
   res.end();
 });

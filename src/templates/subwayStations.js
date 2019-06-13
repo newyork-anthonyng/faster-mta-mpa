@@ -1,10 +1,8 @@
-function stationsTemplate(stations) {
+function stationsTemplate(stations, subwayLine) {
   return stations.reduce((accumulated, current) => {
-    const trainline = "trainline";
-    // @TODO: Need trainline here
     return accumulated += `
     <li>
-      <a href="/realtime/${trainline}/${current.id}">${current.name}</a>
+      <a href="/subway/${subwayLine}/realTime/${current.id}">${current.name}</a>
     </li>
     `;
   }, "");
@@ -26,7 +24,7 @@ function subwayStations(data) {
       id="${borough}-panel"
       role="tabpanel"
     >
-      ${stationsTemplate(current.stations)}
+      ${stationsTemplate(current.stations, data.subwayLine)}
     </ul>
     `;
   }, "");
