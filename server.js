@@ -1,10 +1,9 @@
 const express = require("express");
 const app = express();
-const {
-  headPartial,
-  footPartial,
-  subwayLinesPartial
-} = require("./src/partials/index.js");
+
+const headPartial = require("./src/partials/head.html");
+const footPartial = require("./src/partials/foot.html");
+const subwayLinesPartial = require("./src/partials/subwayLines.js");
 const {
   subwayStations,
   realTime
