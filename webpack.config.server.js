@@ -8,7 +8,8 @@ module.exports = {
   entry: path.resolve(__dirname, "server.js"),
 
   output: {
-    path: path.resolve(__dirname, "functions"),
+    // path: path.resolve(__dirname, "functions"),
+    path: path.resolve(__dirname, "dist"),
     filename: "server.js",
     libraryTarget: "commonjs2"
   },

@@ -11,12 +11,21 @@ const {
 const https = require("https");
 const axios = require("axios");
 const LRU = require("lru-cache");
+const routes = require("./src/routes");
+const webpack = require("webpack");
+const middleware = require("webpack-dev-middleware");
+const path = require("path");
+const compiler = webpack({
+  entry: path.resolve(__dirname, "../src/app.js"),
+  output: {
+    path: path.resolve(__dirname, "dist"),
+    filename: "[name].js"
+  }
+});
 
-const routes = new Map([
-  ["subway", "/subway/:subwayLine"],
-  ["realTime", "/subway/:subwayLine/realTime/:subwayStation"],
-  ["index", "/"]
-]);
+app.use(
+  middleware(compiler)
+);
 
 app.get(routes.get("index"), (req, res) => {
   res.write(headPartial);
