@@ -1,3 +1,40 @@
+function renderTabList(data) {
+  return `
+    <div role="tablist">
+      ${data.map((current, index) => {
+        const borough = current.borough;
+
+        return `
+          <button
+            aria-controls="${borough}-panel"
+            aria-selected="${index === 0 ? "true" : "false"}"
+            id="${borough}-tab"
+            role="tab"
+            data-index="${index}"
+          >${borough}</button>
+        `;
+      }).join("")}
+    </div>
+  `;
+}
+
+function renderTabPanels(data) {
+  return data.reduce((accumulated, current, index) => {
+    const borough = current.borough;
+
+    return accumulated += `
+      <ul
+        aria-labelledby="${borough}-tab"
+        id="${borough}-panel"
+        role="tabpanel"
+        ${index === 0 ? "" : "hidden"}
+      >
+        ${stationsTemplate(current.stations, data.subwayLine)}
+      </ul>
+    `;
+  }, "");
+}
+
 function stationsTemplate(stations, subwayLine) {
   return stations.reduce((accumulated, current) => {
     return accumulated += `
@@ -9,27 +46,10 @@ function stationsTemplate(stations, subwayLine) {
 }
 
 function subwayStations(data) {
-  const result = data.reduce((accumulated, current) => {
-    const borough = current.borough;
+  const tabList = renderTabList(data);
+  const tabPanels = renderTabPanels(data);
 
-    return accumulated += `
-    <button
-      aria-controls="${borough}-panel"
-      aria-selected="false"
-      id="${borough}-tab"
-      role="tab"
-    >${borough}</button>
-    <ul
-      aria-labelledby="${borough}-tab"
-      id="${borough}-panel"
-      role="tabpanel"
-    >
-      ${stationsTemplate(current.stations, data.subwayLine)}
-    </ul>
-    `;
-  }, "");
-
-  return result;
+  return `${tabList}${tabPanels}`;
 }
 
 module.exports = subwayStations;
