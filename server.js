@@ -16,6 +16,7 @@ const webpack = require("webpack");
 const middleware = require("webpack-dev-middleware");
 const path = require("path");
 const compiler = webpack({
+  mode: "development",
   entry: path.resolve(__dirname, "../src/app.js"),
   output: {
     path: path.resolve(__dirname, "dist"),
