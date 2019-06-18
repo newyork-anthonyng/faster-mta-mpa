@@ -35,6 +35,25 @@ app.get(routes.get("index"), (req, res) => {
   res.end();
 });
 
+app.get(routes.get("partials"), (req, res) => {
+  const fileName = req.params.fileName;
+
+  switch (fileName) {
+    case "head.html":
+      res.send(headPartial);
+      break;
+    case "foot.html":
+      res.send(footPartial);
+      break;
+    case "subwayLines.html":
+      res.send(subwayLinesPartial);
+      break;
+    default:
+      res.sendStatus(404);
+      break;
+  }
+});
+
 const apiCache = new LRU({
     max: 100,
     maxAge: 1000 * 60 * 5, // 5 minutes.
