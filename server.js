@@ -110,6 +110,7 @@ app.get(routes.get("subway"), async (req, res) => {
   const data = await getSubwayLine(subwayLine);
   data.subwayLine = subwayLine;
   res.write(subwayStations(data));
+  res.write(`<script src="/main.js"></script>`);
   res.write(footPartial);
   res.end();
 });
