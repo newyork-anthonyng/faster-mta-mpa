@@ -8,6 +8,8 @@ const {
   subwayStations,
   realTime
 } = require("./src/templates/index.js");
+const urls = require("./src/urls");
+const formatData = require("./src/formatData");
 const https = require("https");
 const axios = require("axios");
 const LRU = require("lru-cache");
@@ -17,7 +19,10 @@ const middleware = require("webpack-dev-middleware");
 const path = require("path");
 const compiler = webpack({
   mode: "development",
-  entry: path.resolve(__dirname, "../src/app.js"),
+  entry: {
+    main: path.resolve(__dirname, "../src/app.js"),
+    ["service-worker"]: path.resolve(__dirname, "../src/service-worker.js")
+  },
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "[name].js"
@@ -58,8 +63,6 @@ const apiCache = new LRU({
     max: 100,
     maxAge: 1000 * 60 * 5, // 5 minutes.
 });
-const SUBWAY_STATION_URL = "http://traintimelb-367443097.us-east-1.elb.amazonaws.com/getStationsByLine";
-const REALTIME_URL = "http://traintimelb-367443097.us-east-1.elb.amazonaws.com/getTime";
 const apiClient = axios.create({
     baseURL: '',
     timeout: 10000,
@@ -68,7 +71,7 @@ const httpsAgent = new https.Agent({
   keepAlive: true
 });
 async function getSubwayLine(line) {
-  const url = `${SUBWAY_STATION_URL}/${line}`;
+  const url = urls.subwayLine(line);
   const cachedResponse = apiCache.get(url);
   if (cachedResponse) {
     return cachedResponse;
@@ -78,22 +81,16 @@ async function getSubwayLine(line) {
     httpsAgent,
     url
   });
-
-  const data = networkResponse.data;
-  let parsedBody = [];
-  try {
-    parsedBody = JSON.parse(data);
+  const parsedBody = formatData.formatSubwayLineData(networkResponse.data);
+  if (parsedBody.length > 0) {
     apiCache.set(url, parsedBody);
-  } catch(e) {
-    console.error(`Error getting subway line information at ${url}`);
-    console.error(e);
   }
 
   return parsedBody;
 }
 
 async function getSubwayStation(line, station) {
-  const url = `${REALTIME_URL}/${line}/${station}`;
+  const url = urls.realTime(line, station);
   const networkResponse = await apiClient.request({
     httpsAgent,
     url
