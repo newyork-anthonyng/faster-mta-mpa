@@ -1,0 +1,20 @@
+<div class="js-subway-map-container"></div>
+<script>
+    // We need to make fetch call for PDF
+    // <object> calls don't go through ServiceWorker cache
+    // https://www.chromestatus.com/feature/6313531834105856
+    // https://w3c.github.io/ServiceWorker/#implementer-concerns
+    fetch("/static/subway_map.pdf")
+        .then(response => response.blob())
+        .then(blob => URL.createObjectURL(blob))
+        .then(subwayMapUrl => {
+            const objEle = document.createElement("object");
+            objEle.setAttribute("width", 500);
+            objEle.setAttribute("height", 375);
+            objEle.setAttribute("type", "application/pdf");
+            objEle.setAttribute("data", subwayMapUrl);
+
+            const $subwayMapContainer = document.querySelector(".js-subway-map-container");
+            $subwayMapContainer.appendChild(objEle);
+        });
+</script>

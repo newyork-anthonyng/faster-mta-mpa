@@ -18,6 +18,7 @@
     "regexparam": "^1.2.1"
   },
   "devDependencies": {
+    "copy-webpack-plugin": "^5.0.3",
     "firebase-admin": "^8.0.0",
     "html-loader": "^0.5.5",
     "nodemon": "^1.19.1",
