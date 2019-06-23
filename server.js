@@ -4,6 +4,7 @@ const app = express();
 const headPartial = require("./src/partials/head.html");
 const footPartial = require("./src/partials/foot.html");
 const subwayLinesPartial = require("./src/partials/subwayLines.js");
+const subwayMapPartial = require("./src/partials/subwayMap.html");
 const {
   subwayStations,
   realTime
@@ -33,9 +34,12 @@ app.use(
   middleware(compiler)
 );
 
+app.use("/static", express.static(path.resolve(__dirname, "static")));
+
 app.get(routes.get("index"), (req, res) => {
   res.write(headPartial);
   res.write(subwayLinesPartial);
+  res.write(subwayMapPartial);
   res.write(footPartial);
   res.end();
 });
@@ -44,17 +48,11 @@ app.get(routes.get("partials"), (req, res) => {
   const fileName = req.params.fileName;
 
   switch (fileName) {
-    case "head.html":
-      res.send(headPartial);
-      break;
-    case "foot.html":
-      res.send(footPartial);
-      break;
     case "subwayLines.html":
       res.send(subwayLinesPartial);
       break;
     default:
-      res.sendStatus(404);
+      res.sendFile(path.resolve(__dirname, `../src/partials/${fileName}`));
       break;
   }
 });

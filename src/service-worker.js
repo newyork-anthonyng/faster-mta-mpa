@@ -9,8 +9,10 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox
 workbox.precaching.precacheAndRoute([
     "partials/head.html",
     "partials/subwayLines.html",
+    "partials/subwayMap.html",
     "partials/foot.html",
-    "main.js"
+    "main.js",
+    "static/subway_map.pdf"
 ]);
 workbox.precaching.cleanupOutdatedCaches();
 
@@ -25,6 +27,7 @@ workbox.routing.registerRoute(
     workbox.streams.strategy([
         () => cacheStrategy.makeRequest({ request: partials.head() }),
         () => cacheStrategy.makeRequest({ request: partials.subwayLines() }),
+        () => cacheStrategy.makeRequest({ request: partials.subwayMap() }),
         () => cacheStrategy.makeRequest({ request: partials.foot() })
     ])
 );
@@ -88,11 +91,6 @@ workbox.routing.registerRoute(
                 request: urls.realTime(subwayLine, subwayStation)
             });
             const data = await response.json();
-            console.log("************");
-            console.log("realTime data");
-            console.log(data);
-            console.log("************");
-
             return templates.realTime(data);
         },
         () => cacheStrategy.makeRequest({ request: partials.foot() })
