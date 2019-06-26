@@ -33,6 +33,11 @@ module.exports = (env = {}) => {
         {
           from: path.resolve(__dirname, "src/subway_map.pdf"),
           to: path.resolve(__dirname, `${OUTPUT_PATH}/static/`)
+        },
+        {
+          from: path.resolve(__dirname, "src/partials/*.html"),
+          to: path.resolve(__dirname, `${OUTPUT_PATH}/`),
+          context: "src/"
         }
       ]),
       new webpack.DefinePlugin({

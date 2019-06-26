@@ -39,6 +39,7 @@ if (!PRODUCTION) {
   );
 }
 
+app.use("/", express.static(path.resolve(__dirname)));
 app.use("/static", express.static(path.resolve(__dirname, "static")));
 
 app.get(routes.get("index"), (req, res) => {

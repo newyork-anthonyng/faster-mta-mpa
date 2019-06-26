@@ -27,7 +27,7 @@ const subwayLinesPartial = SUBWAY_LINES.reduce((accumulated, subway) => {
   return accumulated += `
   <li>
     <div style="width: 20px; height: 20px; display: inline-block; background-color: ${subway.color}"></div>
-    <a href="/subway/${subway.name}">${subway.name}</a>
+    <a href="./subway/${subway.name}">${subway.name}</a>
   </li>
   `;
 }, "");
