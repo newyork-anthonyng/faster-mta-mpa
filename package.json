@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack --watch --config=webpack.config.server.js",
-    "build": "webpack --config=webpack.config.server.js",
+    "build": "webpack --config=webpack.config.server.js --env.production",
     "deploy": "npm run build && firebase deploy"
   },
   "keywords": [],
