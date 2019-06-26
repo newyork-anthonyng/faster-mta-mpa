@@ -17,7 +17,7 @@ const LRU = require("lru-cache");
 const routes = require("./src/routes");
 const path = require("path");
 
-if (process.env.NODE_ENV === "development") {
+if (!PRODUCTION) {
   // Set up hot reloading
   const webpack = require("webpack");
   const middleware = require("webpack-dev-middleware");

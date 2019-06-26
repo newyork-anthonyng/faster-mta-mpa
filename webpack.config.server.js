@@ -1,3 +1,4 @@
+const webpack = require("webpack");
 const NodemonPlugin = require("nodemon-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const nodeExternals = require("webpack-node-externals");
@@ -33,7 +34,10 @@ module.exports = (env = {}) => {
           from: path.resolve(__dirname, "src/subway_map.pdf"),
           to: path.resolve(__dirname, `${OUTPUT_PATH}/static/`)
         }
-      ])
+      ]),
+      new webpack.DefinePlugin({
+        PRODUCTION: JSON.stringify(!!env.production)
+      })
     ],
 
     target: "node",

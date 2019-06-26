@@ -1,15 +1,19 @@
 const path = require("path");
 
-module.exports = {
-    mode: "production",
+module.exports = (env = {}) => {
+    const OUTPUT_PATH = env.production ? "functions": "dist";
 
-    entry: {
-        main: path.resolve(__dirname, "./src/app.js"),
-        ["service-worker"]: path.resolve(__dirname, "./src/service-worker.js")
-    },
+    return {
+        mode: "production",
 
-    output: {
-        path: path.resolve(__dirname, "dist"),
-        filename: "[name].js"
-    }
+        entry: {
+            main: path.resolve(__dirname, "./src/app.js"),
+            ["service-worker"]: path.resolve(__dirname, "./src/service-worker.js")
+        },
+
+        output: {
+            path: path.resolve(__dirname, OUTPUT_PATH),
+            filename: "[name].js"
+        }
+    };
 };
