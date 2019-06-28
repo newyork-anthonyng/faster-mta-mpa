@@ -49,16 +49,14 @@ workbox.routing.registerRoute(
     workbox.streams.strategy([
         () => cacheStrategy.makeRequest({ request: partials.head() }),
         ({ url }) => {
-            // Write subway line
             const { subwayLine } = getUrlInformation(url);
 
             return `<h2>${subwayLine}</h2>`;
         },
         async ({ event, url }) => {
-            // Make request for subwayInfo
             const { subwayLine } = getUrlInformation(url);
 
-            const response = await apiStrategy.makeRequest({
+            const response = await cacheStrategy.makeRequest({
                 event,
                 request: urls.subwayLine(subwayLine)
             });
@@ -67,7 +65,7 @@ workbox.routing.registerRoute(
             formattedData.subwayLine = subwayLine;
 
             const template = templates.subwayStations(formattedData);
-            return `${template}<script src="/main.js"></script>`;
+            return `${template}<script src="./main.js"></script>`;
         },
         () => cacheStrategy.makeRequest({ request: partials.foot() })
     ])
