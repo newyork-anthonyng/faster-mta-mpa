@@ -15,25 +15,13 @@ const https = require("https");
 const axios = require("axios");
 const LRU = require("lru-cache");
 const routes = require("./src/routes");
-const webpack = require("webpack");
-const middleware = require("webpack-dev-middleware");
 const path = require("path");
-const compiler = webpack({
-  mode: "development",
-  entry: {
-    main: path.resolve(__dirname, "../src/app.js"),
-    ["service-worker"]: path.resolve(__dirname, "../src/service-worker.js")
-  },
-  output: {
-    path: path.resolve(__dirname, "dist"),
-    filename: "[name].js"
-  }
-});
 
-app.use(
-  middleware(compiler)
-);
+if (!PRODUCTION) {
+  require("./src/setUpWebpackDevMiddleware")(app);
+}
 
+app.use("/", express.static(path.resolve(__dirname)));
 app.use("/static", express.static(path.resolve(__dirname, "static")));
 
 app.get(routes.get("index"), (req, res) => {
@@ -105,7 +93,7 @@ app.get(routes.get("subway"), async (req, res) => {
   const data = await getSubwayLine(subwayLine);
   data.subwayLine = subwayLine;
   res.write(subwayStations(data));
-  res.write(`<script src="/main.js"></script>`);
+  res.write(`<script src="./main.js"></script>`);
   res.write(footPartial);
   res.end();
 });

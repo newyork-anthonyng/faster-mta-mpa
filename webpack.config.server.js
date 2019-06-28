@@ -1,44 +1,56 @@
+const webpack = require("webpack");
 const NodemonPlugin = require("nodemon-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const nodeExternals = require("webpack-node-externals");
 const path = require("path");
 
-module.exports = {
-  mode: "production",
+module.exports = (env = {}) => {
+  const OUTPUT_PATH = env.production ? "functions": "dist";
 
-  entry: path.resolve(__dirname, "server.js"),
+  return {
+    mode: "development",
 
-  output: {
-    // path: path.resolve(__dirname, "functions"),
-    path: path.resolve(__dirname, "dist"),
-    filename: "server.js",
-    libraryTarget: "commonjs2"
-  },
+    entry: path.resolve(__dirname, "server.js"),
 
-  module: {
-    rules: [
-      {
-        test: /\.html$/,
-        use: "html-loader"
-      }
-    ]
-  },
+    output: {
+      path: path.resolve(__dirname, OUTPUT_PATH),
+      filename: "server.js",
+      libraryTarget: "commonjs2"
+    },
 
-  plugins: [
-    new NodemonPlugin(),
-    new CopyPlugin([
-      {
-        from: path.resolve(__dirname, "src/subway_map.pdf"),
-        to: path.resolve(__dirname, "dist/static/")
-      }
-    ])
-  ],
+    module: {
+      rules: [
+        {
+          test: /\.html$/,
+          use: "html-loader"
+        }
+      ]
+    },
 
-  target: "node",
+    plugins: [
+      new NodemonPlugin(),
+      new CopyPlugin([
+        {
+          from: path.resolve(__dirname, "src/subway_map.pdf"),
+          to: path.resolve(__dirname, `${OUTPUT_PATH}/static/`)
+        },
+        {
+          from: path.resolve(__dirname, "src/partials/*.html"),
+          to: path.resolve(__dirname, `${OUTPUT_PATH}/`),
+          context: "src/"
+        }
+      ]),
+      new webpack.DefinePlugin({
+        PRODUCTION: JSON.stringify(!!env.production)
+      })
+    ],
 
-  node: {
-    __dirname: false
-  },
+    target: "node",
 
-  externals: [nodeExternals()]
+    node: {
+      __dirname: false
+    },
+
+    externals: [nodeExternals()]
+  };
 };
