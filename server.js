@@ -90,11 +90,18 @@ app.get(routes.get("subway"), async (req, res) => {
   const subwayLine = req.params.subwayLine;
   res.write(headPartial);
   res.write(`<h2>${subwayLine}</h2>`);
-  const data = await getSubwayLine(subwayLine);
-  data.subwayLine = subwayLine;
-  res.write(subwayStations(data));
-  res.write(`<script src="./main.js"></script>`);
-  res.write(footPartial);
+  try {
+    const data = await getSubwayLine(subwayLine);
+    data.subwayLine = subwayLine;
+    res.write(subwayStations(data));
+    res.write(`<script src="./main.js"></script>`);
+    res.write(footPartial);
+  } catch(e) {
+    console.error("Error getting subway line information");
+    console.error(e);
+    res.write("<p>Error fetching information</p>");
+  }
+
   res.end();
 });
 
@@ -103,9 +110,17 @@ app.get(routes.get("realTime"), async (req, res) => {
 
   res.write(headPartial);
   res.write(`<h2>Real time info for ${subwayLine}</h2>`);
-  const data = await getSubwayStation(subwayLine, subwayStation);
-  res.write(realTime(data));
-  res.write(footPartial);
+
+  try {
+    const data = await getSubwayStation(subwayLine, subwayStation);
+    res.write(realTime(data));
+    res.write(footPartial);
+  } catch(e) {
+    console.error("Error getting realTime information");
+    console.error(e);
+    res.write("<p>Error fetching information</p>");
+  }
+
   res.end();
 });
 
