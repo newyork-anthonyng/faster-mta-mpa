@@ -4,7 +4,7 @@
     // <object> calls don't go through ServiceWorker cache
     // https://www.chromestatus.com/feature/6313531834105856
     // https://w3c.github.io/ServiceWorker/#implementer-concerns
-    fetch("./static/subway_map.pdf")
+    fetch("/mta/static/subway_map.pdf")
         .then(response => response.blob())
         .then(blob => URL.createObjectURL(blob))
         .then(subwayMapUrl => {

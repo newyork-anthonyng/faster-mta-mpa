@@ -35,6 +35,15 @@ module.exports = (env = {}) => {
           to: path.resolve(__dirname, `${OUTPUT_PATH}/static/`)
         },
         {
+          from: path.resolve(__dirname, "manifest.json"),
+          to: path.resolve(__dirname, `${OUTPUT_PATH}/`)
+        },
+        {
+          from: path.resolve(__dirname, "images/*.png"),
+          to: path.resolve(__dirname, `${OUTPUT_PATH}/static`),
+          context: "images/"
+        },
+        {
           from: path.resolve(__dirname, "src/partials/*.html"),
           to: path.resolve(__dirname, `${OUTPUT_PATH}/`),
           context: "src/"
