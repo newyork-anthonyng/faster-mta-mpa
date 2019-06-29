@@ -9,6 +9,7 @@
         .then(blob => URL.createObjectURL(blob))
         .then(subwayMapUrl => {
             const objEle = document.createElement("object");
+            objEle.setAttribute("aria-label", "PDF of MTA Subway Map");
             objEle.setAttribute("width", 500);
             objEle.setAttribute("height", 375);
             objEle.setAttribute("type", "application/pdf");

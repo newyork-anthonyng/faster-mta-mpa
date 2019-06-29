@@ -32,4 +32,4 @@ const subwayLinesPartial = SUBWAY_LINES.reduce((accumulated, subway) => {
   `;
 }, "");
 
-module.exports = subwayLinesPartial;
+module.exports = `<ul>${subwayLinesPartial}</ul>`;
