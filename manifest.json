@@ -1,0 +1,20 @@
+{
+    "short_name": "HBFS MTA",
+    "name": "Subway Time",
+    "icons": [
+        {
+            "src": "/mta/static/icons-192.png",
+            "type": "image/png",
+            "sizes": "192x192"
+        },
+        {
+            "src": "/mta/static/icons-512.png",
+            "type": "image/png",
+            "sizes": "512x512"
+        }
+    ],
+    "start_url": "/mta/",
+    "background_color": "#223266",
+    "display": "minimal-ui",
+    "theme_color": "#223266"
+}
