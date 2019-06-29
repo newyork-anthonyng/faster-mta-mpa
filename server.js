@@ -1,4 +1,5 @@
 const express = require("express");
+const router = express.Router();
 const app = express();
 
 const headPartial = require("./src/partials/head.html");
@@ -21,10 +22,11 @@ if (!PRODUCTION) {
   require("./src/setUpWebpackDevMiddleware")(app);
 }
 
-app.use("/", express.static(path.resolve(__dirname)));
-app.use("/static", express.static(path.resolve(__dirname, "static")));
+const PROD_URL = PRODUCTION ? "" : "/mta"
+app.use(`${PROD_URL}/`, express.static(path.resolve(__dirname)));
+app.use(`${PROD_URL}/static`, express.static(path.resolve(__dirname, "static")));
 
-app.get(routes.get("index"), (req, res) => {
+router.get(routes.get("index"), (req, res) => {
   res.write(headPartial);
   res.write(subwayLinesPartial);
   res.write(subwayMapPartial);
@@ -32,7 +34,7 @@ app.get(routes.get("index"), (req, res) => {
   res.end();
 });
 
-app.get(routes.get("partials"), (req, res) => {
+router.get(routes.get("partials"), (req, res) => {
   const fileName = req.params.fileName;
 
   switch (fileName) {
@@ -86,7 +88,7 @@ async function getSubwayStation(line, station) {
   return data;
 }
 
-app.get(routes.get("subway"), async (req, res) => {
+router.get(routes.get("subway"), async (req, res) => {
   const subwayLine = req.params.subwayLine;
   res.write(headPartial);
   res.write(`<h2>${subwayLine}</h2>`);
@@ -94,7 +96,7 @@ app.get(routes.get("subway"), async (req, res) => {
     const data = await getSubwayLine(subwayLine);
     data.subwayLine = subwayLine;
     res.write(subwayStations(data));
-    res.write(`<script src="./main.js"></script>`);
+    res.write(`<script src="/mta/main.js"></script>`);
     res.write(footPartial);
   } catch(e) {
     console.error("Error getting subway line information");
@@ -105,7 +107,7 @@ app.get(routes.get("subway"), async (req, res) => {
   res.end();
 });
 
-app.get(routes.get("realTime"), async (req, res) => {
+router.get(routes.get("realTime"), async (req, res) => {
   const { subwayLine, subwayStation } = req.params;
 
   res.write(headPartial);
@@ -123,6 +125,13 @@ app.get(routes.get("realTime"), async (req, res) => {
 
   res.end();
 });
+
+if (!PRODUCTION) {
+  app.use("/mta", router);
+} else {
+  // Firebase mounts our app on "/mta"
+  app.use("/", router);
+}
 
 const listener = app.listen(process.env.HOST || 3000, () => {
   console.log(`Server listening on ${listener.address().port}`);
