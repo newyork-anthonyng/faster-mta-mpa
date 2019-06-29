@@ -5,7 +5,7 @@ This site is hosted on firebase. [You can see it here.](https://us-central1-fast
 ## Getting started
 ```shell
 npm install
-npm run dev # localhost:3000
+npm run dev # localhost:3000/mta
 
 npm run deploy # deploy to firebase
 ```

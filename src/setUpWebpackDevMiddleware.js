@@ -11,13 +11,15 @@ function webpackDevMiddleware(expressApp) {
             ["service-worker"]: path.resolve(__dirname, "../src/service-worker.js")
         },
         output: {
-            path: path.resolve(__dirname, "dist"),
-            filename: "[name].js"
-        }
+            path: path.resolve(__dirname),
+            filename: "[name].js",
+        },
     });
 
     expressApp.use(
-        middleware(compiler)
+        middleware(compiler, {
+            writeToDisk: true
+        })
     );
 }
 
