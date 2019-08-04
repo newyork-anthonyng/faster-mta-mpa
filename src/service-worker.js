@@ -34,8 +34,8 @@ workbox.routing.registerRoute(
 
 function getUrlInformation(url) {
     const splitUrl = url.pathname.split("/");
-    const subwayLine = splitUrl[2];
-    const subwayStation = splitUrl[4];
+    const subwayLine = splitUrl[3];
+    const subwayStation = splitUrl[5];
 
     return {
         subwayLine,
@@ -65,7 +65,7 @@ workbox.routing.registerRoute(
             formattedData.subwayLine = subwayLine;
 
             const template = templates.subwayStations(formattedData);
-            return `${template}<script src="./main.js"></script>`;
+            return `${template}<script src="/mta/main.js"></script>`;
         },
         () => cacheStrategy.makeRequest({ request: partials.foot() })
     ])
