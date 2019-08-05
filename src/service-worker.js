@@ -1,8 +1,14 @@
 import routeMatchers from "./routeMatchers";
 import partials from "./partials/index";
-import * as urls from "./urls";
-import * as formatData from "./formatData";
 import * as templates from "./templates/index.js";
+const urls = {
+    subwayLine: (line) => {
+        return `/mta/api/subway/${line}`;
+    },
+    realTime: (line, station) => {
+        return `/mta/api/realtime/${line}/${station}`;
+    }
+};
 
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js');
 
@@ -61,10 +67,9 @@ workbox.routing.registerRoute(
                 request: urls.subwayLine(subwayLine)
             });
             const data = await response.json();
-            const formattedData = formatData.formatSubwayLineData(data);
-            formattedData.subwayLine = subwayLine;
+            data.subwayLine = subwayLine;
 
-            const template = templates.subwayStations(formattedData);
+            const template = templates.subwayStations(data);
             return `${template}<script src="/mta/main.js"></script>`;
         },
         () => cacheStrategy.makeRequest({ request: partials.foot() })
