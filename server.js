@@ -126,6 +126,21 @@ router.get(routes.get("realTime"), async (req, res) => {
   res.end();
 });
 
+router.get("/api/subway/:subwayLine", async (req, res) => {
+  const subwayLine = req.params.subwayLine;
+  const data = await getSubwayLine(subwayLine);
+
+  res.json(data);
+});
+
+router.get("/api/realtime/:subwayLine/:subwayStation", async (req, res) => {
+  const subwayLine = req.params.subwayLine;
+  const subwayStation = req.params.subwayStation;
+  const data = await getSubwayStation(subwayLine, subwayStation);
+
+  res.json(data);
+});
+
 if (!PRODUCTION) {
   app.use("/mta", router);
 } else {
