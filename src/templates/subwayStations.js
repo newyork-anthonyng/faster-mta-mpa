@@ -39,7 +39,7 @@ function stationsTemplate(stations, subwayLine) {
   return stations.reduce((accumulated, current) => {
     return accumulated += `
     <li>
-      <a href="/mta/subway/${subwayLine}/realTime/${current.id}">${current.name}</a>
+      <a class="js-station-link" href="/mta/subway/${subwayLine}/realTime/${current.id}">${current.name}</a>
     </li>
     `;
   }, "");

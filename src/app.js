@@ -1,3 +1,14 @@
+import { saveRecentlyViewedStation } from "./recentlyViewed";
+
+// Start: Recently viewed stations
+const $stationLinks = document.querySelectorAll(".js-station-link");
+$stationLinks.forEach($stationLink => {
+    $stationLink.addEventListener("click", () => {
+        saveRecentlyViewedStation($stationLink.innerText, $stationLink.href);
+    });
+});
+// End: Recently viewed stations
+
 // Start: Handle tabs
 const $tabs = document.querySelectorAll(`[role="tab"]`);
 const $panels = document.querySelectorAll(`[role="tabpanel"]`);
