@@ -14,10 +14,12 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox
 
 workbox.precaching.precacheAndRoute([
     "partials/head.html",
+    "partials/recentlyViewed.html",
     "partials/subwayLines.html",
     "partials/subwayMap.html",
     "partials/foot.html",
     "main.js",
+    "home.js",
     "static/subway_map.pdf"
 ]);
 workbox.precaching.cleanupOutdatedCaches();
@@ -32,7 +34,9 @@ workbox.routing.registerRoute(
     routeMatchers.get("index"),
     workbox.streams.strategy([
         () => cacheStrategy.makeRequest({ request: partials.head() }),
+        () => cacheStrategy.makeRequest({ request: partials.recentlyViewed() }),
         () => cacheStrategy.makeRequest({ request: partials.subwayLines() }),
+        () => `<script src="/mta/home.js"></script>`,
         () => cacheStrategy.makeRequest({ request: partials.subwayMap() }),
         () => cacheStrategy.makeRequest({ request: partials.foot() })
     ])

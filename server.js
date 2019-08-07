@@ -4,6 +4,7 @@ const app = express();
 
 const headPartial = require("./src/partials/head.html");
 const footPartial = require("./src/partials/foot.html");
+const recentlyViewedPartial = require("./src/partials/recentlyViewed.html");
 const subwayLinesPartial = require("./src/partials/subwayLines.js");
 const subwayMapPartial = require("./src/partials/subwayMap.html");
 const {
@@ -28,8 +29,10 @@ app.use(`${PROD_URL}/static`, express.static(path.resolve(__dirname, "static")))
 
 router.get(routes.get("index"), (req, res) => {
   res.write(headPartial);
+  res.write(recentlyViewedPartial);
   res.write(subwayLinesPartial);
   res.write(subwayMapPartial);
+  res.write(`<script src="/mta/home.js"></script>`);
   res.write(footPartial);
   res.end();
 });
