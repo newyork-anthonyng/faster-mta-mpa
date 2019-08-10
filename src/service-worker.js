@@ -1,3 +1,7 @@
+// https://babeljs.io/docs/en/babel-polyfill
+import "core-js/stable";
+import "regenerator-runtime/runtime";
+
 import routeMatchers from "./routeMatchers";
 import partials from "./partials/index";
 import * as templates from "./templates/index.js";

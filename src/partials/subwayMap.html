@@ -1,13 +1,15 @@
 <div class="js-subway-map-container"></div>
 <script>
-    // We need to make fetch call for PDF
+    // We need to make API call for PDF
     // <object> calls don't go through ServiceWorker cache
     // https://www.chromestatus.com/feature/6313531834105856
     // https://w3c.github.io/ServiceWorker/#implementer-concerns
-    fetch("/mta/static/subway_map.pdf")
-        .then(response => response.blob())
-        .then(blob => URL.createObjectURL(blob))
-        .then(subwayMapUrl => {
+    const xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState !== 4) return;
+
+        if (xhr.status >= 200 && xhr.status < 300) {
+            const subwayMapUrl = URL.createObjectURL(xhr.response);
             const objEle = document.createElement("object");
             objEle.setAttribute("aria-label", "PDF of MTA Subway Map");
             objEle.setAttribute("width", 500);
@@ -17,5 +19,9 @@
 
             const $subwayMapContainer = document.querySelector(".js-subway-map-container");
             $subwayMapContainer.appendChild(objEle);
-        });
+        }
+    }
+    xhr.open("GET", "/mta/static/subway_map.pdf");
+    xhr.responseType = "blob";
+    xhr.send();
 </script>
