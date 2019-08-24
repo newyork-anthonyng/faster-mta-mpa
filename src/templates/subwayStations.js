@@ -1,6 +1,10 @@
+function titleCase(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+}
+
 function renderTabList(data) {
   return `
-    <div role="tablist">
+    <div role="tablist" class="tab--list">
       ${data.map((current, index) => {
         const borough = current.borough;
 
@@ -8,10 +12,11 @@ function renderTabList(data) {
           <button
             aria-controls="${borough}-panel"
             aria-selected="${index === 0 ? "true" : "false"}"
+            class="tab--button"
             id="${borough}-tab"
             role="tab"
             data-index="${index}"
-          >${borough}</button>
+          >${titleCase(borough)}</button>
         `;
       }).join("")}
     </div>
@@ -27,6 +32,7 @@ function renderTabPanels(data) {
         aria-labelledby="${borough}-tab"
         id="${borough}-panel"
         role="tabpanel"
+        class="tab--panel"
         ${index === 0 ? "" : "hidden"}
       >
         ${stationsTemplate(current.stations, data.subwayLine)}
@@ -38,8 +44,8 @@ function renderTabPanels(data) {
 function stationsTemplate(stations, subwayLine) {
   return stations.reduce((accumulated, current) => {
     return accumulated += `
-    <li>
-      <a class="js-station-link" href="/mta/subway/${subwayLine}/realTime/${current.id}">${current.name}</a>
+    <li class="station__list-item">
+      <a class="js-station-link station__link" href="/mta/subway/${subwayLine}/realTime/${current.id}">${current.name}</a>
     </li>
     `;
   }, "");

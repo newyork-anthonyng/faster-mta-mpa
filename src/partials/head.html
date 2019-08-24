@@ -11,6 +11,203 @@
     <link rel="apple-touch-icon" sizes="96x96" href="/mta/static/icons-96.png">
     <link rel="apple-touch-icon" sizes="192x192" href="/mta/static/icons-192.png">
     <link rel="manifest" href="/mta/manifest.json">
+    <style>
+      * {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+      }
+
+      html {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        margin: 0;
+        padding: 20px;
+      }
+
+      .home__header {
+        font-size: 24px;
+        color: #37352F;
+        font-weight: 600;
+        margin-top: 5px;
+        margin-bottom: 40px;
+      }
+
+      .favorites__header,
+      .subwayLine__header,
+      .subwayMap--header {
+        color: #AFAEAC;
+        font-weight: 600;
+        font-size: 24px;
+        margin-top: 0;
+      }
+
+      .subwayName__header {
+        font-size: 24px;
+        font-weight: 600;
+        color: #37352F;
+        margin-top: 0;
+        margin-bottom: 28px;
+      }
+
+      .realtime__header {
+        font-size: 24px;
+        font-weight: 600;
+        color: #37352F;
+        margin: 0 0 8px 0;
+      }
+
+      .favorites__header {
+        margin-bottom: 30px;
+      }
+
+      .subwayLine__header {
+        margin-bottom: 12px;
+      }
+
+      .subwayLine__link {
+        padding-right: 20px;
+      }
+
+      .subwayLine__link,
+      .favorites__link,
+      .station__link {
+        font-size: 20px;
+        color: #757370;
+      }
+
+      .favorites__container {
+        padding-left: 22px;
+      }
+
+      .favorites__list {
+        list-style: none;
+        margin-bottom: 30px;
+        padding: 0;
+      }
+
+      .favorites__list-item {
+        margin-bottom: 30px;
+      }
+
+      .subwayLine__link:visited,
+      .favorites__link,
+      .station__link {
+        color: #757370;
+      }
+
+      .subwayLine__list {
+        list-style: none;
+        padding: 0;
+      }
+
+      .subwayLine__list-item {
+        padding: 15px 0 15px 30px;
+      }
+
+      .breadcrumbs__list {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 36px 0;
+      }
+
+      .breadcrumbs__list-item {
+        display: inline-block;
+      }
+
+      .breadcrumbs__link {
+        font-size: 24px;
+        color: #757370;
+      }
+
+      .breadcrumbs__arrow {
+        font-size: 24px;
+        color: #757370;
+      }
+
+      .tab--list {
+        margin-bottom: 30px;
+      }
+
+      .tab--button {
+        font-size: 24px;
+        color: #AFAEAC;
+        border: 0;
+        border-top: 3px solid none;
+        padding: 5px 15px;
+      }
+
+      .tab--button[aria-selected="true"] {
+        border-top: 3px solid #0041EA;
+      }
+
+      .tab--panel {
+        list-style: none;
+        padding: 0 0 0 22px;
+        margin: 0;
+      }
+
+      .station__list-item {
+        margin-bottom: 30px;
+      }
+
+      .table---caption {
+        text-align: left;
+        font-size: 24px;
+        color: #AFAEAC;
+        font-weight: 600;
+        margin-bottom: 6px;
+      }
+
+      .table--head {
+        font-weight: 400;
+        color: #AFAEAC;
+        font-size: 16px;
+        text-align: left;
+        padding-right: 12px;
+      }
+
+      .table {
+        margin-bottom: 30px;
+      }
+
+      .table--info {
+        color: #757370;
+        padding: 5px 0;
+      }
+
+      .table--body-row:nth-child(even) {
+        background-color: rgba(196, 196, 196, 0.05);
+      }
+
+      .subway__time {
+        margin: 0 0 12px 0;
+        color: #AFAEAC;
+        font-weight: 300;
+      }
+
+      .realtime__error {
+        background-color: rgba(235, 95, 67, 0.05);
+        color: #757370;
+        padding: 24px;
+      }
+
+      .favorites__button {
+        font-size: 16px;
+        text-transform: uppercase;
+        border: 0;
+        background-color: #CC0000;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 2px;
+        margin-bottom: 32px;
+      }
+
+      .favorite--favorited {
+        background-color: #DFDFDF;
+        color: #606060;
+      }
+    </style>
   </head>
   <body>
-    <h1><a href="/mta">MTA Subway Time</a></h1>

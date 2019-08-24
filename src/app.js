@@ -1,18 +1,7 @@
-import { saveRecentlyViewedStation } from "./recentlyViewed";
-
 function forEach(elements, cb) {
     for (let i = 0; i < elements.length; i++) {
         cb(elements[i]);
     }
-}
-
-function setupStationLinkEventListeners() {
-    const $stationLinks = document.querySelectorAll(".js-station-link");
-    forEach($stationLinks, $stationLink => {
-        $stationLink.addEventListener("click", () => {
-            saveRecentlyViewedStation($stationLink.innerText, $stationLink.href);
-        });
-    });
 }
 
 function setupTabs() {
@@ -71,7 +60,6 @@ function setupTabs() {
 
         tab.removeAttribute("tabindex");
         tab.setAttribute("aria-selected", "true");
-        tab.setAttribute("style", "border-top: 1px solid blue;");
 
         const controls = tab.getAttribute("aria-controls");
         document.getElementById(controls).removeAttribute("hidden");
@@ -81,7 +69,6 @@ function setupTabs() {
     function deactivateTabs() {
         forEach($tabs, $tab => {
             $tab.setAttribute("aria-selected", "false");
-            $tab.setAttribute("style", "border-top: 0;");
             $tab.setAttribute("tabindex", "-1");
         });
 
@@ -91,5 +78,4 @@ function setupTabs() {
     }
 }
 
-setupStationLinkEventListeners();
 setupTabs();

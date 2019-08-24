@@ -1,4 +1,6 @@
-<div class="js-subway-map-container"></div>
+<div class="js-subway-map-container">
+    <h2 class="subwayMap--header">Subway Map</h2>
+</div>
 <script>
     // We need to make API call for PDF
     // <object> calls don't go through ServiceWorker cache
@@ -12,8 +14,8 @@
             const subwayMapUrl = URL.createObjectURL(xhr.response);
             const objEle = document.createElement("object");
             objEle.setAttribute("aria-label", "PDF of MTA Subway Map");
-            objEle.setAttribute("width", 500);
-            objEle.setAttribute("height", 375);
+            objEle.setAttribute("width", "100%");
+            objEle.setAttribute("height", 500);
             objEle.setAttribute("type", "application/pdf");
             objEle.setAttribute("data", subwayMapUrl);
 
