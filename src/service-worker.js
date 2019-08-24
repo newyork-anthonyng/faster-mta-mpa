@@ -18,12 +18,15 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox
 
 workbox.precaching.precacheAndRoute([
     "partials/head.html",
+    "partials/homeHead.html",
+    "partials/stationsHead.html",
     "partials/recentlyViewed.html",
     "partials/subwayLines.html",
     "partials/subwayMap.html",
     "partials/foot.html",
     "main.js",
     "home.js",
+    "realTime.js",
     "static/subway_map.pdf"
 ]);
 workbox.precaching.cleanupOutdatedCaches();
@@ -38,10 +41,10 @@ workbox.routing.registerRoute(
     routeMatchers.get("index"),
     workbox.streams.strategy([
         () => cacheStrategy.makeRequest({ request: partials.head() }),
-        () => cacheStrategy.makeRequest({ request: partials.recentlyViewed() }),
+        () => cacheStrategy.makeRequest({ request: partials.homeHead() }),
         () => cacheStrategy.makeRequest({ request: partials.subwayLines() }),
-        () => `<script src="/mta/home.js"></script>`,
         () => cacheStrategy.makeRequest({ request: partials.subwayMap() }),
+        () => `<script src="/mta/home.js"></script>`,
         () => cacheStrategy.makeRequest({ request: partials.foot() })
     ])
 );
@@ -62,10 +65,11 @@ workbox.routing.registerRoute(
     routeMatchers.get("subway"),
     workbox.streams.strategy([
         () => cacheStrategy.makeRequest({ request: partials.head() }),
+        () => cacheStrategy.makeRequest({ request: partials.stationsHead() }),
         ({ url }) => {
             const { subwayLine } = getUrlInformation(url);
 
-            return `<h2>${subwayLine}</h2>`;
+            return `<h2 class="subwayName__header">${subwayLine}</h2>`;
         },
         async ({ event, url }) => {
             const { subwayLine } = getUrlInformation(url);
@@ -92,7 +96,20 @@ workbox.routing.registerRoute(
         ({ url }) => {
             const { subwayLine } = getUrlInformation(url);
 
-            return `<h2>Real time info for ${subwayLine}</h2>`;
+            return `
+            <nav class="breadcrumbs">
+                <ul class="breadcrumbs__list">
+                    <li class="breadcrumbs__list-item">
+                        <a class="breadcrumbs__link" href="/mta">Home</a>
+                        <span class="breadcrumbs__arrow">></span>
+                    </li>
+                    <li class="breadcrumbs__list-item">
+                        <a class="breadcrumbs__link" href="/mta/subway/${subwayLine}">${subwayLine}</a>
+                        <span class="breadcrumbs__arrow">></span>
+                    </li>
+                </ul>
+            </nav>
+            `;
         },
         async ({ event, url }) => {
             const { subwayLine, subwayStation } = getUrlInformation(url);
@@ -102,7 +119,7 @@ workbox.routing.registerRoute(
                 request: urls.realTime(subwayLine, subwayStation)
             });
             const data = await response.json();
-            return templates.realTime(data);
+            return `${templates.realTime(data)}<script src="/mta/realTime.js"></script>`;
         },
         () => cacheStrategy.makeRequest({ request: partials.foot() })
     ])

@@ -25,11 +25,10 @@ const SUBWAY_LINES = [
 
 const subwayLinesPartial = SUBWAY_LINES.reduce((accumulated, subway) => {
   return accumulated += `
-  <li>
-    <div style="width: 20px; height: 20px; display: inline-block; background-color: ${subway.color}"></div>
-    <a href="/mta/subway/${subway.name}">${subway.name}</a>
+  <li class="subwayLine__list-item" style="border-left: 16px solid ${subway.color}">
+    <a class="subwayLine__link" href="/mta/subway/${subway.name}">${subway.name}</a>
   </li>
   `;
 }, "");
 
-module.exports = `<ul>${subwayLinesPartial}</ul>`;
+module.exports = `<h2 class="subwayLine__header">Subways</h2><ul class="subwayLine__list">${subwayLinesPartial}</ul>`;
